@@ -28,13 +28,13 @@ end
 if Chef::Config['http_proxy'].nil?
   proxycmd  = ""
 else
-  proxycmd  = "--proxy #{Chef::Config['http_proxy']}"
+  proxycmd  = "--proxy #{Chef::Config['http_proxy'].gsub(/^https?:\/\//, '')}"
 end
 
 execute "setup.exe" do
   cwd node['cygwin']['download_path']
   command "setup.exe -q -O -R #{node['cygwin']['home']} -s #{node['cygwin']['site']} #{proxycmd}"
-  not_if {File.exists?("c:/cygwin/etc/passwd")}
+  not_if {File.exists?("#{node['cygwin']['home']}/etc/passwd")}
 end
 
 windows_path "#{node['cygwin']['home']}/bin".gsub( /\//, "\\") do

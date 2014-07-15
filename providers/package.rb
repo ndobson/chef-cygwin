@@ -8,7 +8,7 @@ action :install do
   if Chef::Config['http_proxy'].nil?
     proxycmd  = ""
   else
-    proxycmd  = "--proxy #{Chef::Config['http_proxy']}"
+    proxycmd  = "--proxy #{Chef::Config['http_proxy'].gsub(/^https?:\/\//, '')}"
   end
 
   log("Cygwin package: #{new_resource.name}")
